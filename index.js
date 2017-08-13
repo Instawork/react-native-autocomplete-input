@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-let rnVersion = Number.parseFloat(require('react-native/package.json').version);
+const rnVersion = Number.parseFloat(require('react-native/package.json').version);
 
 class Autocomplete extends Component {
   static propTypes = {
@@ -127,7 +127,7 @@ class Autocomplete extends Component {
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
         renderRow={renderItem}
         renderSeparator={renderSeparator}
-        style={[styles.list, listStyle]}
+        style={listStyle}
       />
     );
   }
@@ -135,7 +135,7 @@ class Autocomplete extends Component {
   renderTextInput() {
     const { onEndEditing, renderTextInput, style } = this.props;
     const props = {
-      style: [styles.input, style],
+      style: style,
       ref: ref => (this.textInput = ref),
       onEndEditing: e => onEndEditing && onEndEditing(e),
       ...this.props
@@ -160,78 +160,14 @@ class Autocomplete extends Component {
     onShowResults && onShowResults(showResults);
 
     return (
-      <View style={[styles.container, containerStyle]}>
-        <View style={[styles.inputContainer, inputContainerStyle]}>
+      <View style={containerStyle}>
+        <View style={inputContainerStyle}>
           {this.renderTextInput()}
         </View>
-        {!hideResults && (
-          <View
-            style={listContainerStyle}
-            onStartShouldSetResponderCapture={onStartShouldSetResponderCapture}
-          >
-            {showResults && this.renderResultList()}
-          </View>
-        )}
+        {!hideResults && showResults && this.renderResultList()}
       </View>
     );
   }
 }
-
-const border = {
-  borderColor: '#b9b9b9',
-  borderRadius: 1,
-  borderWidth: 1
-};
-
-const androidStyles = {
-  container: {
-    flex: 1
-  },
-  inputContainer: {
-    ...border,
-    marginBottom: 0
-  },
-  list: {
-    ...border,
-    backgroundColor: 'white',
-    borderTopWidth: 0,
-    margin: 10,
-    marginTop: 0
-  }
-};
-
-const iosStyles = {
-  container: {
-    zIndex: 1
-  },
-  inputContainer: {
-    ...border
-  },
-  input: {
-    backgroundColor: 'white',
-    height: 40,
-    paddingLeft: 3
-  },
-  list: {
-    ...border,
-    backgroundColor: 'white',
-    borderTopWidth: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0
-  }
-};
-
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: 'white',
-    height: 40,
-    paddingLeft: 3
-  },
-  ...Platform.select({
-    android: { ...androidStyles },
-    ios: { ...iosStyles }
-  })
-});
 
 export default Autocomplete;
