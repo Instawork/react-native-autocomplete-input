@@ -26,6 +26,10 @@ class Autocomplete extends Component {
      */
     data: PropTypes.array,
     /**
+     * Allow an optional default value for the TextInput.
+     */
+    defaultValue: PropTypes.string,
+    /**
      * Set to `true` to hide the suggestion list.
      */
     hideResults: PropTypes.bool,
